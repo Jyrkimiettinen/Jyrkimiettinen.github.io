@@ -3,55 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minun Portfolio</title>
-    <link rel="stylesheet" href="Tyylitiedosto.css">
+    <title>Elite 4-viikon kehonmuutosohjelma</title>
+    <style>
+                /* ...existing code... */
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 8px;
+            }
+            h1 {
+                font-size: 1.3rem;
+            }
+            h2 {
+                font-size: 1.1rem;
+            }
+            .exercise-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .mini-video {
+                max-width: 100%;
+                height: 180px;
+            }
+            .workout-day {
+                padding: 10px;
+            }
+            .exercise {
+                padding: 7px;
+            }
+            .rules {
+                padding: 10px;
+                font-size: 0.95rem;
+            }
+        }
+        /* ...existing code... */
+        :root {
+            --pääväri: #2c3e50;
+            --toissijainen: #e74c3c;
+            --korostus: #3498db;
+            --vaalea: #ecf0f1;
+            --tumma: #1a252f;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--pääväri), var(--tumma));
+            color: var(--vaalea);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .workout-day {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: var(--korostus);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        h2 {
+            color: var(--toissijainen);
+            border-bottom: 2px solid var(--korostus);
+            padding-bottom: 5px;
+        }
+        
+        .exercise {
+            margin: 15px 0;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 5px;
+        }
+        
+        .mini-video {
+            width: 100%;
+            max-width: 300px;
+            height: 170px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        
+        .rules {
+            background: rgba(231, 76, 60, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+        
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1 style="color: white;">Emir Miftari Portfolio</h1>
-    </header>
-    <nav>
-        <a href="#about">Esittely</a>
-        <a href="#skills">Taidot</a>
-        <a href="#experience">Työkokemus</a>
-        <a href="#projects">Projektit</a>
-        <a href="#contact">Yhteystiedot</a>
-    </nav>
-    <section id="about">
-        <h2>Esittely</h2>
-        <p>olen luova ja intohimoinen web-kehittäjä, jolla on tosi vähän kokemusta alalta. Erikoistun sivustojen tekemisestä ja nautin projekteista, jotka yhdistävät luovuuden ja teknisen osaamisen. Tavoitteeni on luoda ratkaisuja, jotka ylittävät asiakkaan odotukset. Vapaa-ajallani kiinnostuksen kohteeni ovat harrastukseni eli nyrkkeily. Olen Careeria Ammattikoulussa ja Olen valinnut ammatikohteeksi IT-ala ja suuntautunut ohjelmistokehittäjäksi.</p>
-    </section>
-    <section id="skills">
-        <h2>Taidot</h2>
-        <ul>
-            <li>HTML, CSS, JavaScript, Github, Unityhub, Word, Excel, Powerpoint, Office365. </li>
-        </ul>
-    </section>
-    <section id="experience">
-        <h2>Työkokemus</h2>
-        <ul>
-            <li>
-                <h3>S-market näsi Kesätyö</h3>
-                <p><strong>Aika:</strong> Kesäkuu 2024– Elokuu </p>2024
-                <p><strong>Tehtävät:</strong> S-marketissa hyllyttäjänä.</p>
-            </li>
-        </ul>
-    </section>
-    <section id="projects">
-        <h2>Projektit</h2>
-        <ul>
-            <li>Oma Verkkokauppa -  Tegnologiana Käytin HTML</li>
-            <li>Unity Peli - teknologiana käytin C Sharp</li>
-            <li>Henkilökohtainen blogi - Teknologiana käytin React</li>
-        </ul>
-    </section>
-    <section id="contact">
-        <h2>Yhteystiedot</h2>
-        <p>Sähköposti: <a href="mailto:Miftariemir4@gmail.com">Miftariemir4@gmail.com</a></p>
-        <p>Puhelin: <a href="tel:0442432600">044 243 2600</a></p>
-    </section>
-    <footer>
-        <p>&copy; 2023 Olli. Kaikki oikeudet pidätetään.</p>
-    </footer>
+    <div class="container">
+        <h1>4-VIIKON KOVAA SALIOHJELMAA</h1>
+        
+        <!-- Viikko 1-4 toistetaan tämä 7 päivän sykli -->
+        <h2>Viikko 1</h2>
+        
+        <div class="workout-day">
+            <h2>Päivä 1: Rinta & Hauis</h2>
+            <div class="exercise-grid">
+                <div class="exercise">
+                    <strong>Penkkipunnerrus 5x5</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/4Y2ZdHCOXok?start=30" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Vinopenkki 4x8</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/gRVjAtPip0Y?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Hauiskääntö 3x10</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/sAq_ocpRh_I?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Rintalihasvipu 3x12</strong>
+                </div>
+                <div class="exercise">
+                    <strong>Vasemmalle ja oikealle hauisvipu 3x10</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/ywC0LcR9h80?start=10" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="workout-day">
+            <h2>Päivä 2: Jalat</h2>
+            <div class="exercise-grid">
+                <div class="exercise">
+                    <strong>Kyykky 5x5</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/bEv6CCg2BC8?start=20" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Kantapääkyykky 4x10</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/JbyjNymZOt0?start=10" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Hack-kyykky 4x8</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/0tn5K9NlCfo?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Jalkaprässi 4x10</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/ZU6X0j5Q9y4?start=20" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Pohkeet 4x15</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/YyvSfVjQeL0?start=10" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="workout-day">
+            <h2>Päivä 3: Selkä & Olkapäät</h2>
+            <div class="exercise-grid">
+                <div class="exercise">
+                    <strong>Maastaveto 4x6</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/op9kVnSso6Q?start=25" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Leuka-vedot 3xMax</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/eGo4IYlbE5g?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Ylätalja 4x8</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/CAwf7n6Luuc?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Pystypunnerrus 4x8</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/8QGhHOF7XeI?start=20" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Sivunosto 3x12</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/3VcKaXpzqRo?start=10" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="workout-day">
+            <h2>Päivä 4: HIIT-kardio</h2>
+            <div class="exercise-grid">
+                <div class="exercise">
+                    <strong>20/40s intervallit 15min</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/tKU35Hh80iU?start=30" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Hyppyjäätikkö 4x30s</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/cNTDZxXK8sA?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Burpees 3x10</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/dZgVxmf6jkA?start=10" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Juoksuportaat 10min</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/5umbf5GqX1I?start=20" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="workout-day">
+            <h2>Päivä 5: Yläkroppa</h2>
+            <div class="exercise-grid">
+                <div class="exercise">
+                    <strong>Pystypunnerrus 4x8</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/8QGhHOF7XeI?start=20" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Hauiskääntö 3x10</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/sAq_ocpRh_I?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Vinoleuanveto 3x8</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/6kALZikXxLc?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Käsipaino-ohjaus 3x10</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/0JfYxMRsUCQ?start=10" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Käsipainonojapunnerrus 3x12</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/6Z15_WdXmVw?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="workout-day">
+            <h2>Päivä 6: Aktiivinen lepo</h2>
+            <p>Kävely 10,000 askelta</p>
+            <p>Venyttely 20 minuuttia</p>
+            <iframe class="mini-video" src="https://www.youtube.com/embed/g_tea8ZNk5A?start=10" frameborder="0" allowfullscreen></iframe>
+        </div>
+        
+        <div class="workout-day">
+            <h2>Päivä 7: Liikkuvuus & Core</h2>
+            <div class="exercise-grid">
+                <div class="exercise">
+                    <strong>Plankki 3x60s</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/pSHjTRCQxIw?start=5" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Venkutus 3x12</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/1fbU_MkV7NE?start=15" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Venyttely 20min</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/g_tea8ZNk5A?start=10" frameborder="0" allowfullscreen></iframe>
+                </div>
+                <div class="exercise">
+                    <strong>Venytysvyöhykeharjoitus</strong>
+                    <iframe class="mini-video" src="https://www.youtube.com/embed/9a6DHyZf_1o?start=20" frameborder="0" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <div class="rules">
+            <h3>Ohjelman säännöt</h3>
+            <ul>
+                <li>Toista tämä 7 päivän sykli 4 viikkoa</li>
+                <li>Nosta painoja viikoittain (2.5-5% lisää painoihin)</li>
+                <li>Levä 1-2 minuuttia sarjojen välissä</li>
+                <li>Nuku vähintään 7 tuntia yössä</li>
+                <li>Syö riittävästi proteiinia (2g/kg painoa)</li>
+                <li>Pidä vesitaso korkeana</li>
+                <li>Kuuntele kehoasi - lepoa tarvittaessa</li>
+            </ul>
+        </div>
+    </div>
 </body>
 </html>
