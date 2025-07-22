@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite 4-viikon kehonmuutosohjelma</title>
+    <title>1-VIIKON KOVAA SALIOHJELMAA</title>
     <style>
         :root {
-            --pääväri: #2c3e50;
-            --toissijainen: #e74c3c;
-            --korostus: #3498db;
-            --vaalea: #ecf0f1;
-            --tumma: #1a252f;
-            --valmis: #2ecc71;
-            --kesken: #f39c12;
-            --varoitus: #e67e22;
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --highlight: #3498db;
+            --light: #ecf0f1;
+            --dark: #1a252f;
+            --completed: #2ecc71;
+            --partial: #f39c12;
+            --warning: #e67e22;
         }
         
         body {
@@ -21,8 +21,8 @@
             line-height: 1.6;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, var(--pääväri), var(--tumma));
-            color: var(--vaalea);
+            background: linear-gradient(135deg, var(--primary), var(--dark));
+            color: var(--light);
             min-height: 100vh;
         }
         
@@ -32,58 +32,71 @@
             padding: 20px;
         }
         
-        .workout-day {
-            background: rgba(255,255,255,0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-            position: relative;
-        }
-        
-        .workout-day:hover {
-            transform: translateY(-5px);
-        }
-        
-        .day-tag {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-        
-        .day-completed .day-tag {
-            background: var(--valmis);
-            color: white;
-        }
-        
-        .day-skipped .day-tag {
-            background: var(--toissijainen);
-            color: white;
-        }
-        
-        .day-partial .day-tag {
-            background: var(--varoitus);
-            color: white;
-        }
-        
         h1 {
-            color: var(--korostus);
+            color: var(--highlight);
             text-align: center;
             margin-bottom: 30px;
             font-size: 2rem;
         }
         
         h2 {
-            color: var(--toissijainen);
-            border-bottom: 2px solid var(--korostus);
+            color: var(--secondary);
+            border-bottom: 2px solid var(--highlight);
             padding-bottom: 5px;
             margin-top: 0;
             margin-right: 60px;
+        }
+        
+        .workout-day {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .workout-day:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .day-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            background: var(--dark);
+            color: white;
+        }
+        
+        .day-completed {
+            background: rgba(46, 204, 113, 0.15);
+            border-left: 4px solid var(--completed);
+        }
+        
+        .day-skipped {
+            background: rgba(231, 76, 60, 0.15);
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .day-partial {
+            background: rgba(243, 156, 18, 0.15);
+            border-left: 4px solid var(--partial);
         }
         
         .exercise {
@@ -93,17 +106,27 @@
             border-radius: 5px;
             position: relative;
             border-left: 4px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .exercise:hover {
+            background: rgba(0,0,0,0.3);
         }
         
         .exercise.completed {
-            border-left-color: var(--valmis);
+            border-left-color: var(--completed);
             background: rgba(46, 204, 113, 0.1);
         }
         
         .exercise.skipped {
-            border-left-color: var(--toissijainen);
+            border-left-color: var(--secondary);
             background: rgba(231, 76, 60, 0.1);
-            opacity: 0.7;
+        }
+        
+        .exercise-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
         }
         
         .mini-video {
@@ -113,6 +136,7 @@
             margin: 10px 0;
             border-radius: 5px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: 2px solid rgba(255,255,255,0.1);
         }
         
         .rules {
@@ -120,12 +144,7 @@
             padding: 20px;
             border-radius: 8px;
             margin: 25px 0;
-        }
-        
-        .exercise-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 15px;
+            border-left: 4px solid var(--secondary);
         }
         
         .progress-container {
@@ -133,11 +152,12 @@
             background: rgba(0,0,0,0.2);
             border-radius: 8px;
             padding: 15px;
+            border-left: 4px solid var(--highlight);
         }
         
         .progress-bar {
             height: 20px;
-            background: var(--tumma);
+            background: var(--dark);
             border-radius: 10px;
             margin-top: 10px;
             overflow: hidden;
@@ -145,70 +165,9 @@
         
         .progress-fill {
             height: 100%;
-            background: var(--korostus);
+            background: var(--highlight);
             width: 0%;
             transition: width 0.5s ease;
-        }
-        
-        .btn {
-            background: var(--korostus);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px;
-            margin-top: 10px;
-            transition: all 0.3s;
-        }
-        
-        .btn:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-        }
-        
-        .btn-complete {
-            background: var(--valmis);
-        }
-        
-        .btn-complete:hover {
-            background: #27ae60;
-        }
-        
-        .btn-skip {
-            background: var(--toissijainen);
-        }
-        
-        .btn-skip:hover {
-            background: #c0392b;
-        }
-        
-        .btn-reset {
-            background: var(--tumma);
-        }
-        
-        .btn-reset:hover {
-            background: #0e161f;
-        }
-        
-        .btn-clear-all {
-            background: var(--toissijainen);
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            font-size: 1rem;
-        }
-        
-        .btn-clear-all:hover {
-            background: #c0392b;
-        }
-        
-        .btn-notes {
-            background: var(--varoitus);
-        }
-        
-        .btn-notes:hover {
-            background: #d35400;
         }
         
         .stats {
@@ -225,27 +184,71 @@
             border-radius: 5px;
             min-width: 120px;
             text-align: center;
+            flex: 1;
         }
         
         .stat-value {
             font-size: 1.5rem;
             font-weight: bold;
-            color: var(--korostus);
+            color: var(--highlight);
         }
         
-        .day-completed {
-            background: rgba(46, 204, 113, 0.1);
-            border: 1px solid var(--valmis);
+        .btn {
+            background: var(--highlight);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+            transition: all 0.3s;
+            font-weight: bold;
         }
         
-        .day-skipped {
-            background: rgba(231, 76, 60, 0.1);
-            border: 1px solid var(--toissijainen);
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
-        .day-partial {
-            background: rgba(230, 126, 34, 0.1);
-            border: 1px solid var(--varoitus);
+        .btn-complete {
+            background: var(--completed);
+        }
+        
+        .btn-complete:hover {
+            background: #27ae60;
+        }
+        
+        .btn-skip {
+            background: var(--secondary);
+        }
+        
+        .btn-skip:hover {
+            background: #c0392b;
+        }
+        
+        .btn-reset {
+            background: var(--dark);
+        }
+        
+        .btn-reset:hover {
+            background: #0e161f;
+        }
+        
+        .btn-clear-all {
+            background: var(--secondary);
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            font-size: 1rem;
+        }
+        
+        .btn-notes {
+            background: var(--warning);
+        }
+        
+        .btn-notes:hover {
+            background: #d35400;
         }
         
         .exercise-actions {
@@ -267,6 +270,12 @@
             background: rgba(255,255,255,0.1);
             border-radius: 5px;
             display: none;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .exercise-notes.show {
@@ -278,24 +287,15 @@
             min-height: 60px;
             margin-top: 5px;
             background: rgba(0,0,0,0.2);
-            border: 1px solid var(--korostus);
+            border: 1px solid var(--highlight);
             border-radius: 5px;
             padding: 8px;
             color: white;
+            font-family: inherit;
         }
         
         .save-notes {
             margin-top: 5px;
-        }
-        
-        .week-navigation {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-        }
-        
-        .week-btn {
-            padding: 10px 20px;
         }
         
         .rest-timer {
@@ -305,16 +305,19 @@
             margin: 15px 0;
             text-align: center;
             display: none;
+            border-left: 4px solid var(--highlight);
         }
         
         .rest-timer.active {
             display: block;
+            animation: fadeIn 0.5s;
         }
         
         .timer-display {
             font-size: 2rem;
             font-weight: bold;
             margin: 10px 0;
+            color: var(--light);
         }
         
         .timer-btn {
@@ -323,8 +326,9 @@
         
         .exercise-muscles {
             font-size: 0.8rem;
-            color: var(--korostus);
+            color: var(--highlight);
             margin-top: 5px;
+            font-style: italic;
         }
         
         .exercise-equipment {
@@ -333,58 +337,6 @@
             margin-top: 3px;
         }
         
-        @media (max-width: 600px) {
-            .container {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-            h2 {
-                font-size: 1.2rem;
-            }
-            .exercise-grid {
-                grid-template-columns: 1fr;
-                gap: 12px;
-            }
-            .mini-video {
-                max-width: 100%;
-                height: 200px;
-            }
-            .workout-day {
-                padding: 15px;
-            }
-            .exercise {
-                padding: 12px;
-            }
-            .rules {
-                padding: 15px;
-                font-size: 0.95rem;
-            }
-            .btn {
-                padding: 8px 12px;
-                font-size: 0.9rem;
-            }
-            .stats {
-                flex-direction: column;
-                gap: 5px;
-            }
-            .stat-box {
-                width: 100%;
-            }
-        }
-        
-        /* Animation for completed exercises */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .exercise.completed {
-            animation: fadeIn 0.5s ease-out;
-        }
-        
-        /* Tooltip styles */
         .tooltip {
             position: relative;
             display: inline-block;
@@ -394,7 +346,7 @@
         .tooltip .tooltiptext {
             visibility: hidden;
             width: 200px;
-            background-color: var(--tumma);
+            background-color: var(--dark);
             color: #fff;
             text-align: center;
             border-radius: 6px;
@@ -412,18 +364,150 @@
             visibility: visible;
             opacity: 1;
         }
+        
+        /* Uudet tyylit */
+        .motivation-quote {
+            background: rgba(52, 152, 219, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-style: italic;
+            border-left: 4px solid var(--highlight);
+        }
+        
+        .workout-summary {
+            background: rgba(46, 204, 113, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--completed);
+        }
+        
+        .workout-tips {
+            background: rgba(243, 156, 18, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid var(--partial);
+        }
+        
+        .nutrition-tips {
+            background: rgba(155, 89, 182, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #9b59b6;
+        }
+        
+        .week-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .week-btn {
+            padding: 8px 15px;
+            background: var(--dark);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .week-btn:hover {
+            background: var(--highlight);
+        }
+        
+        .week-btn.active {
+            background: var(--highlight);
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+                margin-right: 0;
+            }
+            
+            .exercise-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .mini-video {
+                max-width: 100%;
+                height: 200px;
+            }
+            
+            .stats {
+                flex-direction: column;
+            }
+            
+            .stat-box {
+                width: 100%;
+            }
+            
+            .exercise-actions {
+                justify-content: center;
+            }
+            
+            .week-selector {
+                flex-wrap: wrap;
+            }
+        }
+        
+        /* Loading animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--highlight);
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>4-VIIKON KOVAA SALIOHJELMAA</h1>
+        <h1>1-VIIKON KOVAA SALIOHJELMAA</h1>
+        
+        <div class="motivation-quote">
+            <p id="quote-text">"Kestävyys on avain menestykseen - jokainen askel vie sinua lähemmäsi tavoitteitasi."</p>
+            <button class="btn" id="new-quote">Uusi motivaatioteksti</button>
+        </div>
         
         <div class="progress-container">
             <h3>Ohjelman edistyminen</h3>
             <div class="stats">
                 <div class="stat-box">
                     <div>Viikko</div>
-                    <div class="stat-value"><span id="current-week">1</span>/4</div>
+                    <div class="stat-value"><span id="current-week">1</span>/1</div>
                 </div>
                 <div class="stat-box">
                     <div>Päivä</div>
@@ -443,6 +527,11 @@
             </div>
         </div>
         
+        <div class="workout-summary">
+            <h3>Tämän viikon yhteenveto</h3>
+            <p id="week-summary">Aloitetaan ohjelma vahvasti! Tällä viikolla keskitymme perusliikkeisiin ja oikeaan tekniikkaan.</p>
+        </div>
+        
         <div class="rest-timer" id="rest-timer">
             <h3>Lepoaika</h3>
             <div class="timer-display" id="timer-display">01:30</div>
@@ -453,14 +542,23 @@
             </div>
         </div>
         
-        <div class="week-navigation">
-            <button class="btn week-btn" id="prev-week">← Edellinen viikko</button>
-            <h2>Viikko <span class="week-number">1</span></h2>
-            <button class="btn week-btn" id="next-week">Seuraava viikko →</button>
+        <div class="workout-tips">
+            <h3>Viikon vinkit</h3>
+            <ul id="workout-tips-list">
+                <li>Pidä huoli lämmittelystä ennen treeniä</li>
+                <li>Keskity oikeaan tekniikkaan eikä vain painoihin</li>
+                <li>Juokse vettä riittävästi koko päivän ajan</li>
+            </ul>
+        </div>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Ladataan...</p>
         </div>
         
         <!-- Viikko 1 -->
         <div class="workout-week" id="week-1">
+            <!-- Päivä 1 -->
             <div class="workout-day" id="day-1">
                 <h2>Päivä 1: Rinta & Hauis</h2>
                 <div class="day-tag">Rinta & Hauis</div>
@@ -484,8 +582,6 @@
                         </div>
                     </div>
                     
-                    <!-- Lisää samanlaisia harjoituksia tähän -->
-                    <!-- Esimerkkinä yksi lisäharjoitus -->
                     <div class="exercise" data-id="1-2">
                         <strong>Vinopenkki 4x8 (30° kulma)</strong>
                         <div class="exercise-muscles">Kohde: Ylärinta, olkapäät</div>
@@ -505,20 +601,292 @@
                         </div>
                     </div>
                     
-                    <!-- Muut harjoitukset samaan tapaan -->
+                    <div class="exercise" data-id="1-3">
+                        <strong>Hauiskääntö 3x12</strong>
+                        <div class="exercise-muscles">Kohde: Hauikset</div>
+                        <div class="exercise-equipment">Tarvikkeet: Käsipainot</div>
+                        <p class="exercise-description">Pidä kyynärpäät kiinni kyljissä ja käännä painot ylös. Hallitse liikettä alaspäin.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/sAq_ocpRh_I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="45">Lepoaika 0:45</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-1-3">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- Muut päivät samaan tapaan -->
+            <!-- Päivä 2 -->
+            <div class="workout-day" id="day-2">
+                <h2>Päivä 2: Jalat & Ydin</h2>
+                <div class="day-tag">Jalat & Ydin</div>
+                <div class="exercise-grid">
+                    <div class="exercise" data-id="2-1">
+                        <strong>Kyykky 5x5</strong>
+                        <div class="exercise-muscles">Kohde: Nelipäiset, pakarat</div>
+                        <div class="exercise-equipment">Tarvikkeet: Tanko</div>
+                        <p class="exercise-description">Pidä selkä suorana ja polvet varpaiden suuntaisesti. Mene tarpeeksi alas.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/bEv6CCg2BC8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="90">Lepoaika 1:30</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-2-1">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise" data-id="2-2">
+                        <strong>Maastaveto 4x8</strong>
+                        <div class="exercise-muscles">Kohde: Takareidet, pakarat, selkä</div>
+                        <div class="exercise-equipment">Tarvikkeet: Tanko</div>
+                        <p class="exercise-description">Pidä selkä suorana ja kädet olkapäiden leveydellä. Liiku lantion kautta.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/ytGaGIn3SjE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="90">Lepoaika 1:30</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-2-2">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise" data-id="2-3">
+                        <strong>Vatsalihaskääntö 3x15</strong>
+                        <div class="exercise-muscles">Kohde: Vatsalihakset</div>
+                        <div class="exercise-equipment">Tarvikkeet: Ei tarvikkeita</div>
+                        <p class="exercise-description">Pidä jalat 90 asteen kulmassa ja käänny ylös. Pidä yläselkä matalalla.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/1fbU_MkV7NE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="30">Lepoaika 0:30</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-2-3">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Päivä 3 -->
+            <div class="workout-day" id="day-3">
+                <h2>Päivä 3: Lepo</h2>
+                <div class="day-tag">Lepo</div>
+                <p>Kunnon lepo on tärkeää kehon palautumiselle. Voit tehdä kevyttä venyttelyä tai käydä kävelyllä.</p>
+            </div>
+            
+            <!-- Päivä 4 -->
+            <div class="workout-day" id="day-4">
+                <h2>Päivä 4: Selkä & Olkapäät</h2>
+                <div class="day-tag">Selkä & Olkapäät</div>
+                <div class="exercise-grid">
+                    <div class="exercise" data-id="4-1">
+                        <strong>Leuanveto 4x8</strong>
+                        <div class="exercise-muscles">Kohde: Latit, biceps</div>
+                        <div class="exercise-equipment">Tarvikkeet: Leuanvetotanko</div>
+                        <p class="exercise-description">Vedä itsesi ylös niin, että leuka ylittää tangon. Laske hitaasti.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/eGo4IYlbE5g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="90">Lepoaika 1:30</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-4-1">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise" data-id="4-2">
+                        <strong>Olkapäät nostot 4x12</strong>
+                        <div class="exercise-muscles">Kohde: Olkapäät</div>
+                        <div class="exercise-equipment">Tarvikkeet: Käsipainot</div>
+                        <p class="exercise-description">Nosta painot sivulle olkapäiden korkeudelle. Pidä kyynärpäät hieman koukussa.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/3VcKaXpzqRo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="60">Lepoaika 1:00</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-4-2">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise" data-id="4-3">
+                        <strong>Kävelykäsipaino 3x10 (kummallekin)</strong>
+                        <div class="exercise-muscles">Kohde: Selkä, olkapäät</div>
+                        <div class="exercise-equipment">Tarvikkeet: Käsipainot</div>
+                        <p class="exercise-description">Pidä selkä suorana ja nosta paino lantiolta rintaan. Vaihtele käsiä.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/jaAV-rD45I0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="45">Lepoaika 0:45</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-4-3">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Päivä 5 -->
+            <div class="workout-day" id="day-5">
+                <h2>Päivä 5: Koko vartalo</h2>
+                <div class="day-tag">Koko vartalo</div>
+                <div class="exercise-grid">
+                    <div class="exercise" data-id="5-1">
+                        <strong>Deadlift 5x5</strong>
+                        <div class="exercise-muscles">Kohde: Takareidet, selkä, pakarat</div>
+                        <div class="exercise-equipment">Tarvikkeet: Tanko</div>
+                        <p class="exercise-description">Pidä selkä suorana ja nosta tanko lantion kautta. Hallitse liikettä.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/1ZXobu7JvvE" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="120">Lepoaika 2:00</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-5-1">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise" data-id="5-2">
+                        <strong>Pystypunnerrus 4x8</strong>
+                        <div class="exercise-muscles">Kohde: Olkapäät, rinta</div>
+                        <div class="exercise-equipment">Tarvikkeet: Käsipainot</div>
+                        <p class="exercise-description">Nosta painot pään yläpuolelle ja laske hitaasti. Pidä ydin lihaksia kireällä.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/qEwKCR5JCog" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="60">Lepoaika 1:00</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-5-2">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise" data-id="5-3">
+                        <strong>Kylkivipu 3x10 (kummallekin)</strong>
+                        <div class="exercise-muscles">Kohde: Vatsalihakset, kyljet</div>
+                        <div class="exercise-equipment">Tarvikkeet: Ei tarvikkeita</div>
+                        <p class="exercise-description">Pidä vartalo suorana ja nouse kyljellään. Vaihtele puolia.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/9ZQ8NniKEmI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                            <button class="btn timer-btn" data-time="30">Lepoaika 0:30</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-5-3">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Päivä 6 -->
+            <div class="workout-day" id="day-6">
+                <h2>Päivä 6: Kardiovaihto</h2>
+                <div class="day-tag">Kardiovaihto</div>
+                <div class="exercise-grid">
+                    <div class="exercise" data-id="6-1">
+                        <strong>Juoksu 30 min</strong>
+                        <div class="exercise-muscles">Kohde: Sydän, keuhkot, jalat</div>
+                        <div class="exercise-equipment">Tarvikkeet: Juoksukengät</div>
+                        <p class="exercise-description">Juokse tasaisella tahdilla 30 minuuttia. Voit tehdä myös intervalliharjoituksen.</p>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-6-1">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                    
+                    <div class="exercise" data-id="6-2">
+                        <strong>Hyppyjuoksu 5x30 sekuntia</strong>
+                        <div class="exercise-muscles">Kohde: Koko vartalo</div>
+                        <div class="exercise-equipment">Tarvikkeet: Ei tarvikkeita</div>
+                        <p class="exercise-description">Juokse paikallaan korkealla intensiteetillä 30 sekuntia, lepää 30 sekuntia.</p>
+                        <iframe class="mini-video" src="https://www.youtube.com/embed/cQ7EfZET1WQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <div class="exercise-actions">
+                            <button class="btn btn-complete">Tehty</button>
+                            <button class="btn btn-skip">Ohita</button>
+                            <button class="btn btn-reset">Nollaa</button>
+                            <button class="btn btn-notes">Muistiinpanot</button>
+                        </div>
+                        <div class="exercise-notes" id="notes-6-2">
+                            <textarea class="notes-textarea" placeholder="Kirjoita muistiinpanoja harjoituksesta..."></textarea>
+                            <button class="btn save-notes">Tallenna</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Päivä 7 -->
+            <div class="workout-day" id="day-7">
+                <h2>Päivä 7: Lepo</h2>
+                <div class="day-tag">Lepo</div>
+                <p>Anna kehosi palautua viikon treeneistä. Voit tehdä kevyttä venyttelyä tai joogaa.</p>
+            </div>
+        </div>
+        
+        <div class="nutrition-tips">
+            <h3>Ravintovinkit tälle viikolle</h3>
+            <ul>
+                <li>Syö riittävästi proteiinia (2g/kg painoa)</li>
+                <li>Vältä prosessoituja hiilihydraatteja</li>
+                <li>Juokse vettä 2-3 litraa päivässä</li>
+                <li>Lisää terveitä rasvoja kalaan, pähkinöihin ja avokadoon</li>
+            </ul>
         </div>
         
         <button class="btn btn-clear-all" id="clear-all">Tyhjennä kaikki</button>
         
         <div class="rules">
-            <h3>Ohjelman säännöt <span class="tooltip">ℹ️<span class="tooltiptext">Noudata näitä ohjeita saadaksesi parhaan tuloksen 4 viikossa</span></span></h3>
+            <h3>Ohjelman säännöt <span class="tooltip">ℹ️<span class="tooltiptext">Noudata näitä ohjeita saadaksesi parhaan tuloksen</span></span></h3>
             <ul>
-                <li><strong>Toistoaika:</strong> 7 päivän sykli 4 viikkoa</li>
-                <li><strong>Progression:</strong> Nosta painoja viikoittain 2.5-5%</li>
+                <li><strong>Toistoaika:</strong> 7 päivän sykli</li>
                 <li><strong>Lepoajat:</strong> 1-2 min sarjojen välissä (voimaharjoitukset)</li>
                 <li><strong>Uni:</strong> Vähintään 7 tuntia yössä</li>
                 <li><strong>Ravinto:</strong> 2g proteiinia per painokilo</li>
@@ -530,17 +898,83 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Alusta harjoitusten tila
+            // ========== GLOBALS ==========
             let exercises = {};
+            let currentWeek = 1;
+            let timerInterval;
+            let timerSeconds = 90;
             const totalExercises = document.querySelectorAll('.exercise').length;
             document.getElementById('total-exercises').textContent = totalExercises;
             
-            // Lataa tallennettu tila localStoragesta
-            if (localStorage.getItem('workoutProgress')) {
-                exercises = JSON.parse(localStorage.getItem('workoutProgress'));
-                updateUI();
-            } else {
-                // Alusta kaikki harjoitukset tekemättöminä
+            // Motivaatiotekstit
+            const quotes = [
+                "Kestävyys on avain menestykseen - jokainen askel vie sinua lähemmäsi tavoitteitasi.",
+                "Tänään tekemäsi ponnistus on huomisen voiton lähde.",
+                "Voima ei tule fyysisestä kyvystä, vaan määrätietoisesta tahdosta.",
+                "Älä keskeytä kun olet väsynyt, keskeytä kun olet valmis.",
+                "Treeni muuttaa sinua paremmaksi versioksi itsestäsi.",
+                "Jokainen treeni on askel kohti parempaa itseäsi.",
+                "Kovin taistelu on mielen taistelu - voitko sinä?",
+                "Tänään on hyvä päivä olla parempi kuin eilen."
+            ];
+            
+            // Viikkokohtaiset yhteenvedot
+            const weekSummaries = {
+                1: "Aloitetaan ohjelma vahvasti! Tällä viikolla keskitymme perusliikkeisiin ja oikeaan tekniikkaan."
+            };
+            
+            // Viikkokohtaiset vinkit
+            const weekTips = {
+                1: [
+                    "Pidä huoli lämmittelystä ennen treeniä",
+                    "Keskity oikeaan tekniikkaan eikä vain painoihin",
+                    "Juokse vettä riittävästi koko päivän ajan"
+                ]
+            };
+            
+            // DOM elements
+            const timerDisplay = document.getElementById('timer-display');
+            const startTimerBtn = document.getElementById('timer-start');
+            const resetTimerBtn = document.getElementById('timer-reset');
+            const closeTimerBtn = document.getElementById('timer-close');
+            const restTimer = document.getElementById('rest-timer');
+            const loadingElement = document.getElementById('loading');
+            const quoteText = document.getElementById('quote-text');
+            const weekSummary = document.getElementById('week-summary');
+            const workoutTipsList = document.getElementById('workout-tips-list');
+            
+            // ========== INITIALIZATION ==========
+            function init() {
+                loadProgress();
+                loadNotes();
+                updateProgressBar();
+                setupEventListeners();
+                updateWeekInfo();
+                
+                // Animate workout days with delay
+                document.querySelectorAll('.workout-day').forEach((day, index) => {
+                    day.style.animationDelay = `${index * 0.1}s`;
+                });
+            }
+            
+            // ========== PROGRESS MANAGEMENT ==========
+            function loadProgress() {
+                loadingElement.classList.add('active');
+                
+                // Simulate loading
+                setTimeout(() => {
+                    if (localStorage.getItem('workoutProgress')) {
+                        exercises = JSON.parse(localStorage.getItem('workoutProgress'));
+                    } else {
+                        initializeExercises();
+                    }
+                    updateUI();
+                    loadingElement.classList.remove('active');
+                }, 500);
+            }
+            
+            function initializeExercises() {
+                exercises = {};
                 document.querySelectorAll('.exercise').forEach(ex => {
                     const id = ex.getAttribute('data-id');
                     exercises[id] = {
@@ -552,138 +986,30 @@
                 saveProgress();
             }
             
-            // Lataa tallennetut muistiinpanot
-            loadNotes();
+            function saveProgress() {
+                localStorage.setItem('workoutProgress', JSON.stringify(exercises));
+            }
             
-            // Alusta viikkonavigointi
-            let currentWeek = 1;
-            showWeek(currentWeek);
-            
-            // Alusta lepoajan ajastin
-            let timerInterval;
-            let timerSeconds = 90;
-            const timerDisplay = document.getElementById('timer-display');
-            const startTimerBtn = document.getElementById('timer-start');
-            const resetTimerBtn = document.getElementById('timer-reset');
-            const closeTimerBtn = document.getElementById('timer-close');
-            const restTimer = document.getElementById('rest-timer');
-            
-            // Päivitä edistymispalkki
-            updateProgressBar();
-            
-            // Lisää tapahtumankuuntelijat painikkeille
-            document.querySelectorAll('.btn-complete').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const exercise = this.closest('.exercise');
-                    const id = exercise.getAttribute('data-id');
-                    exercises[id] = {
-                        completed: true, 
-                        skipped: false,
-                        notes: exercises[id]?.notes || ""
-                    };
-                    saveProgress();
-                    updateUI();
+            function loadNotes() {
+                document.querySelectorAll('.exercise').forEach(ex => {
+                    const id = ex.getAttribute('data-id');
+                    if (exercises[id]?.notes) {
+                        const textarea = ex.querySelector('.notes-textarea');
+                        if (textarea) {
+                            textarea.value = exercises[id].notes;
+                        }
+                    }
                 });
-            });
+            }
             
-            document.querySelectorAll('.btn-skip').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const exercise = this.closest('.exercise');
-                    const id = exercise.getAttribute('data-id');
-                    exercises[id] = {
-                        completed: false, 
-                        skipped: true,
-                        notes: exercises[id]?.notes || ""
-                    };
-                    saveProgress();
-                    updateUI();
-                });
-            });
-            
-            document.querySelectorAll('.btn-reset').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const exercise = this.closest('.exercise');
-                    const id = exercise.getAttribute('data-id');
-                    exercises[id] = {
-                        completed: false, 
-                        skipped: false,
-                        notes: exercises[id]?.notes || ""
-                    };
-                    saveProgress();
-                    updateUI();
-                });
-            });
-            
-            // Muistiinpanonappien toiminnallisuus
-            document.querySelectorAll('.btn-notes').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const exercise = this.closest('.exercise');
-                    const id = exercise.getAttribute('data-id');
-                    const notesDiv = exercise.querySelector('.exercise-notes');
-                    notesDiv.classList.toggle('show');
-                    
-                    // Lataa tallennetut muistiinpanot
-                    const textarea = notesDiv.querySelector('.notes-textarea');
-                    textarea.value = exercises[id]?.notes || "";
-                });
-            });
-            
-            // Tallennusnapit muistiinpanoille
-            document.querySelectorAll('.save-notes').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const exercise = this.closest('.exercise');
-                    const id = exercise.getAttribute('data-id');
-                    const textarea = exercise.querySelector('.notes-textarea');
-                    exercises[id].notes = textarea.value;
-                    saveProgress();
-                });
-            });
-            
-            // Lepoaika-ajastimen napit
-            document.querySelectorAll('.timer-btn[data-time]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const time = parseInt(this.getAttribute('data-time'));
-                    startRestTimer(time);
-                });
-            });
-            
-            startTimerBtn.addEventListener('click', startTimer);
-            resetTimerBtn.addEventListener('click', resetTimer);
-            closeTimerBtn.addEventListener('click', closeTimer);
-            
-            // Clear All -nappi
-            document.getElementById('clear-all').addEventListener('click', function() {
-                if (confirm('Haluatko varmasti tyhjentää kaikki harjoitukset?')) {
-                    document.querySelectorAll('.exercise').forEach(ex => {
-                        const id = ex.getAttribute('data-id');
-                        exercises[id] = {
-                            completed: false, 
-                            skipped: false,
-                            notes: exercises[id]?.notes || ""
-                        };
-                    });
-                    saveProgress();
-                    updateUI();
-                }
-            });
-            
-            // Viikkonavigointi
-            document.getElementById('prev-week').addEventListener('click', function() {
-                if (currentWeek > 1) {
-                    currentWeek--;
-                    showWeek(currentWeek);
-                }
-            });
-            
-            document.getElementById('next-week').addEventListener('click', function() {
-                if (currentWeek < 4) {
-                    currentWeek++;
-                    showWeek(currentWeek);
-                }
-            });
-            
-            // Päivitä käyttöliittymä tallennetun tilan mukaan
+            // ========== UI UPDATES ==========
             function updateUI() {
+                updateExercises();
+                updateDayStatus();
+                updateProgressBar();
+            }
+            
+            function updateExercises() {
                 document.querySelectorAll('.exercise').forEach(ex => {
                     const id = ex.getAttribute('data-id');
                     ex.classList.remove('completed', 'skipped');
@@ -696,8 +1022,9 @@
                         }
                     }
                 });
-                
-                // Tarkista päivän status
+            }
+            
+            function updateDayStatus() {
                 document.querySelectorAll('.workout-day').forEach(day => {
                     const dayExercises = day.querySelectorAll('.exercise');
                     let allCompleted = true;
@@ -727,11 +1054,8 @@
                         day.classList.add('day-partial');
                     }
                 });
-                
-                updateProgressBar();
             }
             
-            // Päivitä edistymispalkki
             function updateProgressBar() {
                 const completedCount = Object.values(exercises).filter(ex => ex.completed).length;
                 const progressPercentage = Math.round((completedCount / totalExercises) * 100);
@@ -740,83 +1064,56 @@
                 document.getElementById('progress-fill').style.width = progressPercentage + '%';
                 document.getElementById('progress-percentage').textContent = progressPercentage;
                 
-                // Päivitä nykyinen viikko ja päivä
                 updateCurrentDayAndWeek();
             }
             
-            // Päivitä nykyinen viikko ja päivä
             function updateCurrentDayAndWeek() {
-                // Tämä on yksinkertaistettu versio - todellisessa sovelluksessa tarvitsisi monimutkaisemman logiikan
                 let currentDay = 1;
-                let currentWeek = 1;
                 
-                // Tarkistetaan ensimmäinen tekemätön päivä
-                for (let week = 1; week <= 4; week++) {
-                    let weekCompleted = true;
+                // Check all days in this week
+                for (let day = 1; day <= 7; day++) {
+                    const dayId = `day-${day}`;
+                    const dayElement = document.getElementById(dayId);
                     
-                    for (let day = 1; day <= 7; day++) {
-                        const dayId = `day-${day}`;
-                        const dayElement = document.getElementById(dayId);
-                        if (dayElement) {
-                            const dayExercises = dayElement.querySelectorAll('.exercise');
-                            let dayCompleted = true;
-                            
-                            dayExercises.forEach(ex => {
-                                const id = ex.getAttribute('data-id');
-                                if (!exercises[id] || (!exercises[id].completed && !exercises[id].skipped)) {
-                                    dayCompleted = false;
-                                }
-                            });
-                            
-                            if (!dayCompleted && currentDay === 1) {
-                                currentDay = day;
-                                currentWeek = week;
-                                weekCompleted = false;
-                                break;
+                    if (dayElement) {
+                        const dayExercises = dayElement.querySelectorAll('.exercise');
+                        let dayCompleted = true;
+                        
+                        // Check if all exercises in this day are completed or skipped
+                        dayExercises.forEach(ex => {
+                            const id = ex.getAttribute('data-id');
+                            if (!exercises[id] || (!exercises[id].completed && !exercises[id].skipped)) {
+                                dayCompleted = false;
                             }
+                        });
+                        
+                        // If this day is not completed and we haven't found current day yet
+                        if (!dayCompleted) {
+                            currentDay = day;
+                            break;
                         }
                     }
-                    
-                    if (!weekCompleted) break;
                 }
                 
-                document.getElementById('current-week').textContent = currentWeek;
+                // Update UI
                 document.getElementById('current-day').textContent = currentDay;
             }
             
-            // Tallenna edistyminen
-            function saveProgress() {
-                localStorage.setItem('workoutProgress', JSON.stringify(exercises));
-            }
-            
-            // Lataa muistiinpanot
-            function loadNotes() {
-                document.querySelectorAll('.exercise').forEach(ex => {
-                    const id = ex.getAttribute('data-id');
-                    if (exercises[id]?.notes) {
-                        const textarea = ex.querySelector('.notes-textarea');
-                        if (textarea) {
-                            textarea.value = exercises[id].notes;
-                        }
-                    }
+            function updateWeekInfo() {
+                // Update week summary
+                weekSummary.textContent = weekSummaries[currentWeek] || "";
+                
+                // Update workout tips
+                workoutTipsList.innerHTML = "";
+                const tips = weekTips[currentWeek] || [];
+                tips.forEach(tip => {
+                    const li = document.createElement('li');
+                    li.textContent = tip;
+                    workoutTipsList.appendChild(li);
                 });
             }
             
-            // Näytä tietty viikko
-            function showWeek(weekNumber) {
-                document.querySelectorAll('.workout-week').forEach(week => {
-                    week.style.display = 'none';
-                });
-                
-                const weekElement = document.getElementById(`week-${weekNumber}`);
-                if (weekElement) {
-                    weekElement.style.display = 'block';
-                }
-                
-                document.querySelector('.week-number').textContent = weekNumber;
-            }
-            
-            // Lepoaika-ajastimen toiminnot
+            // ========== TIMER FUNCTIONS ==========
             function startRestTimer(seconds) {
                 timerSeconds = seconds;
                 updateTimerDisplay();
@@ -832,7 +1129,10 @@
                         if (timerSeconds <= 0) {
                             clearInterval(timerInterval);
                             timerInterval = null;
-                            // Soita äänimerkki (voit lisätä myöhemmin)
+                            startTimerBtn.textContent = 'Käynnistä';
+                            // Play sound when timer ends
+                            const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+                            audio.play();
                         }
                     }, 1000);
                     startTimerBtn.textContent = 'Tauko';
@@ -863,8 +1163,128 @@
                 timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }
             
-            // Alusta UI
-            updateUI();
+            // ========== EVENT LISTENERS ==========
+            function setupEventListeners() {
+                // Exercise complete button
+                document.querySelectorAll('.btn-complete').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const exercise = this.closest('.exercise');
+                        const id = exercise.getAttribute('data-id');
+                        
+                        if (!exercises[id]) {
+                            exercises[id] = { completed: false, skipped: false, notes: "" };
+                        }
+                        
+                        exercises[id].completed = true;
+                        exercises[id].skipped = false;
+                        saveProgress();
+                        updateUI();
+                    });
+                });
+                
+                // Exercise skip button
+                document.querySelectorAll('.btn-skip').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const exercise = this.closest('.exercise');
+                        const id = exercise.getAttribute('data-id');
+                        
+                        if (!exercises[id]) {
+                            exercises[id] = { completed: false, skipped: false, notes: "" };
+                        }
+                        
+                        exercises[id].completed = false;
+                        exercises[id].skipped = true;
+                        saveProgress();
+                        updateUI();
+                    });
+                });
+                
+                // Exercise reset button
+                document.querySelectorAll('.btn-reset').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const exercise = this.closest('.exercise');
+                        const id = exercise.getAttribute('data-id');
+                        
+                        if (!exercises[id]) {
+                            exercises[id] = { completed: false, skipped: false, notes: "" };
+                        }
+                        
+                        exercises[id].completed = false;
+                        exercises[id].skipped = false;
+                        saveProgress();
+                        updateUI();
+                    });
+                });
+                
+                // Notes toggle button
+                document.querySelectorAll('.btn-notes').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const exercise = this.closest('.exercise');
+                        const notesDiv = exercise.querySelector('.exercise-notes');
+                        notesDiv.classList.toggle('show');
+                        
+                        // Load notes if showing
+                        if (notesDiv.classList.contains('show')) {
+                            const id = exercise.getAttribute('data-id');
+                            const textarea = notesDiv.querySelector('.notes-textarea');
+                            textarea.value = exercises[id]?.notes || "";
+                        }
+                    });
+                });
+                
+                // Save notes button
+                document.querySelectorAll('.save-notes').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const exercise = this.closest('.exercise');
+                        const id = exercise.getAttribute('data-id');
+                        const textarea = exercise.querySelector('.notes-textarea');
+                        
+                        if (!exercises[id]) {
+                            exercises[id] = { completed: false, skipped: false, notes: "" };
+                        }
+                        
+                        exercises[id].notes = textarea.value;
+                        saveProgress();
+                        
+                        // Show confirmation
+                        const originalText = this.textContent;
+                        this.textContent = 'Tallennettu!';
+                        setTimeout(() => {
+                            this.textContent = originalText;
+                        }, 2000);
+                    });
+                });
+                
+                // Timer buttons with data-time attribute
+                document.querySelectorAll('.timer-btn[data-time]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const time = parseInt(this.getAttribute('data-time'));
+                        startRestTimer(time);
+                    });
+                });
+                
+                // Timer control buttons
+                startTimerBtn.addEventListener('click', startTimer);
+                resetTimerBtn.addEventListener('click', resetTimer);
+                closeTimerBtn.addEventListener('click', closeTimer);
+                
+                // Clear all button
+                document.getElementById('clear-all').addEventListener('click', function() {
+                    if (confirm('Haluatko varmasti tyhjentää kaikki harjoitukset? Tätä toimintoa ei voi perua.')) {
+                        initializeExercises();
+                        updateUI();
+                    }
+                });
+                
+                // New quote button
+                document.getElementById('new-quote').addEventListener('click', function() {
+                    const randomIndex = Math.floor(Math.random() * quotes.length);
+                    quoteText.textContent = quotes[randomIndex];
+                });
+            }
+            
+            // Initialize the app
+            init();
         });
     </script>
 </body>
